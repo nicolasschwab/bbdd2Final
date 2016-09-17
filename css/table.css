@@ -1,0 +1,26 @@
+.table{
+    height:100%;
+    width:100%;
+    background: white;
+    color: #565656;
+}
+.table-header{
+    font-family: Roboto,sans-serif;
+    height: 50px;
+}
+.table-header div{
+    padding: 10px;
+    text-align: left;
+    background: #fafafa;
+}
+.clear{
+    height: 1px;
+    border: 0;
+    background-color: grey;
+}
+.row{
+    margin-bottom: 15px;
+    margin-top: 15px;
+    border-bottom: 1px solid rgba(0,0,0,0.065);
+}
+

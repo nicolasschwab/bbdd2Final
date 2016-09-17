@@ -1,0 +1,39 @@
+{%extends "vistaBaseSinMenu.html" %}
+
+{% block title %}
+Sing Up!
+{% endblock title %}
+{%block menu%}
+<!-- Esto lo hago para que no aparezca el menu en el login!-->
+{%endblock menu%}
+{%block body%}
+    <div class="header">
+        <div class="header-main">
+            <h1>Crea tu cuenta!</h1>
+            <div class="header-bottom">
+                <div class="header-right w3agile">
+
+                    <div class="header-left-bottom agileinfo">
+
+                        <form action="user/singup" method="post">
+                            <div class="forgot">
+                                <h6><a href="login">Volver</a></h6>
+                            </div>
+                            <div class="clear"> </div>
+                            <h3>{{mensaje}}</h3>
+                            <input type="text"  placeholder="Nombre" name="nombre" onfocus="this.value = '';"/>
+                            <input type="text"  placeholder="Apellido" name="apellido" onfocus="this.value = '';"/>
+                            <input type="text"  placeholder="Email" name="email" onfocus="this.value = '';"/>
+                            <input type="text"  placeholder="User name" name="usuario" onfocus="this.value = '';"/>
+                            <input type="password"  placeholder="Password" name="contrasena" onfocus="this.value = '';" />
+
+                            <input type="submit" value="Sing Up!">
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{%endblock body%}

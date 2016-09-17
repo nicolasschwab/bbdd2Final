@@ -1,0 +1,24 @@
+<html>
+    <head>
+        {% block head%}
+            <title>
+                {% block title%}
+                {% endblock title%}
+                - BBDD2
+            </title>
+            {% include "header.html" %}
+        {% endblock head%}
+    </head>
+    <body>
+        {%block menuSuperior%}
+        {%endblock menuSuperior%}
+        <div>
+            {% block content%}
+            {% endblock content%}
+            {% block footer%}
+                {% include "footer.html" %}
+            {% endblock footer%}
+        </div>
+    </body>
+
+</html>

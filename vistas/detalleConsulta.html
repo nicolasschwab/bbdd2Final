@@ -1,0 +1,92 @@
+{%extends "vistaBaseMenu.html" %}
+
+{% block title %}
+Home
+{% endblock title %}
+
+{%block body%}
+{%if permiso <4%}
+    <div class="col-md-12 barraOperaciones">
+        <div class="botones">
+            <section class="boton">
+                <form method="post">
+                    <input type="submit" class="b" value="Ejecutar"/>
+                </form>
+            </section>
+            {%if permiso <3%}
+                <section class="boton">
+                        <input id="compartir" onclick="mostarCompartir()" type="submit" class="b" value="Compartir"/>
+                </section>
+                <section class="boton">
+                    <form  method="post" action="consulta/eliminar">
+                        <input type="hidden" name="id" value="{{consulta.id}}">
+                        <input type="submit" class="b" value="Eliminar"/>
+                    </form>
+                </section>
+            {%endif%}
+        </div>
+    </div>
+{%endif%}
+<div class="nuevaConsulta col-md-10">
+    <div>
+        <form method="post" action="consulta/editar">
+            <div class="form-group">
+                <label for="Nombre">Nombre</label>
+                {%if permiso<3 %}
+                <input type="text" class="form-control" id="nombre" name="nombre"  placeholder="Nombre de la consulta" value={{consulta.nombre}} />
+                {%else%}
+                    <span class="form-control">{{consulta.nombre}}</span>
+                {%endif%}
+            </div>
+            <div class="form-group">
+                <label for="sql">SQL</label>
+                {%if permiso<3 %}
+                <input type="text" class="form-control" id="sql" name="sql"  placeholder="SQL" value={{consulta.codigo_sql}} />
+                {%else%}
+                <span class="form-control">{{consulta.codigo_sql}}</span>
+                {%endif%}
+            </div>
+            {%if permiso<3 %}
+                <input type="hidden" name="id" value="{{consulta.id}}"/>
+                <input type="hidden" name="nombreActual" value="{{consulta.nombre}}"/>
+                <input type="hidden" name="sqlActual" value="{{consulta.codigo_sql}}"/>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            {%endif%}
+        </form>
+    </div>
+</div>
+<div class="compartir">
+    <div class="contenedor">
+        <div class="fila col-md-12">
+            <div class="title">
+                Compartir con otros usuarios
+            </div>
+        </div>
+        <form action="permiso/agregar" method="post">
+            <div class="content">
+                <div class="personas">Personas</div>
+                <div class="inputOptions">
+                    <div class="inputConteiner">
+                        <input type="email" placeholder="Ingresa el email" id="compartirEmail" name="compartirEmail">
+                    </div>
+                    <div id="suggestions">
+
+                    </div>
+                </div>
+                <div class="selectConteiner">
+                    <select name="permiso">
+                        <option value="ver">Puede ver</option>
+                        <option value="ejecutar">Puede ejecutar</option>
+                        <option value="administrar">Puede administrar</option>
+                    </select>
+                </div>
+            </div>
+            <div class="bot">
+                <input type="submit" value="Listo" class="buton">
+            </div>
+            <input type="hidden" name="id" value={{consulta.id}}>
+        </form>
+    </div>
+
+</div>
+{%endblock body%}

@@ -1,0 +1,28 @@
+{% extends "vistaBase.html"%}
+
+{%block menuSuperior%}
+<div class="menuSuperior col-md-12">
+    <div class="logo">
+        <h1>SQL Drive</h1>
+    </div>
+    <div class="mensaje">
+        <h4>{{mensaje}}</h4>
+    </div>
+    <div class="derecha">
+        {{login}}
+
+    </div>
+</div>
+{%endblock menuSuperior%}
+
+{% block content%}
+    <div class="col-md-2 left-content">
+        {% block menu%}
+            {% include "sideBar.html" %}
+        {% endblock menu%}
+    </div>
+    <div class="col-md-10 body ">
+        {% block body%}
+        {% endblock body%}
+    </div>
+{% endblock content%}

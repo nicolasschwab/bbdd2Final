@@ -1,0 +1,32 @@
+<div class="menu">
+    <ol id="filters">
+        {%if selected=="home"%}
+            <div class="option selected">
+        {%else%}
+            <div class="option">
+        {%endif%}
+                <div class="marcador"></div>
+                <li  ><a href="">Mis consultas</a></li>
+        </div>
+        {%if selected=="compartidas"%}
+        <div class="option selected">
+            {%else%}
+            <div class="option">
+                {%endif%}
+            <div class="marcador"></div>
+            <li  ><a href="consulta/compartidas">Compartidas conmigo</a></li>
+        </div>
+        {%if selected=="crear"%}
+        <div class="option selected">
+            {%else%}
+            <div class="option">
+                {%endif%}
+            <div class="marcador"></div>
+            <li  ><a href="consulta/nueva">Crea una consulta</a></li>
+        </div>
+        <div class="option">
+            <div class="marcador"></div>
+            <li  ><a href="logout">Salir</a></li>
+        </div>
+    </ol>
+</div>

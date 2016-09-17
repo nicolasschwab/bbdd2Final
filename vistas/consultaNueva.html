@@ -1,0 +1,23 @@
+{%extends "vistaBaseMenu.html" %}
+
+{% block title %}
+Home
+{% endblock title %}
+
+{%block body%}
+<div class="nuevaConsulta col-md-10">
+    <div>
+        <form method="post" action="consulta/crear">
+            <div class="form-group">
+                <label for="Nombre">Nombre</label>
+                <input type="text" class="form-control" id="nombre" name="nombre"  placeholder="Nombre de la consulta">
+            </div>
+            <div class="form-group">
+                <label for="sql">SQL</label>
+                <input type="text" class="form-control" id="sql" name="sql"  placeholder="SQL">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+{%endblock body%}
