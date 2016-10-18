@@ -17,8 +17,10 @@
 
                         <form action="login" method="post">
                             <h3>{{mensaje}}</h3>
-                            <input type="text"  placeholder="User name" name="usuario" onfocus="this.value = '';"/>
-                            <input type="password"  placeholder="Password" name="contrasena" onfocus="this.value = '';" />
+                            <label class="mensajeError"><h4>{{usuario}}</h4></label>
+                            <input type="text"  required placeholder="User name" name="usuario" onfocus="this.value = '';"/>
+                            <label class="mensajeError"><h4>{{contrasena}}</h4></label>
+                            <input type="password"  required placeholder="Password" name="contrasena" onfocus="this.value = '';" />
                             <div class="remember">
                              <span class="checkbox1">
                                    <label class="checkbox"><input type="checkbox" name="" checked=""><i> </i>Remember me</label>

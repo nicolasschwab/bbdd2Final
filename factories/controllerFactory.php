@@ -1,7 +1,7 @@
 <?php
 
 
-class ControllerManager{
+class ControllerFactory{
 
     private static $dirControllers = "controllers";
 

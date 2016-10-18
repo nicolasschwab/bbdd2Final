@@ -1,13 +1,14 @@
 <?php
 
 
-class ModelManager{
+class ModelFactory{
 
     private static $dirModels = "models";
 
     public static function getModel($modelName){
         require_once self::$dirModels."/".strtolower($modelName).".php";
-        return new $modelName();
+        $fullName = "Model_".$modelName;
+        return new $fullName;
     }
 
 }

@@ -22,7 +22,7 @@ class Router{
             $route=$this->routes[$name];
             $route->redirect();
         }else{
-            die("Esa ruta no existe");
+            ViewManager::error();
         }
     }
 

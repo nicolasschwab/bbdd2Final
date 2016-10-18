@@ -51,3 +51,13 @@ $(document).ready(function() {
 function mostarCompartir(){
     $(".compartir").show();
 }
+$(document).ready(function(){
+    $( ".formAgregar" ).submit(function( event ) {
+      nombreUsuario = $("#compartirEmail");
+      if(nombreUsuario.val() === "" ){
+        $(".compartir").hide();
+        return false;
+      } 
+      return true;
+    });
+});

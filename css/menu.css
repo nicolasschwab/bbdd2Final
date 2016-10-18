@@ -1,3 +1,6 @@
+.mensajeError{
+    color:grey;
+}
 .left-content{
     padding-left: 0px !important;
     background-color: #eee;

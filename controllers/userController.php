@@ -10,47 +10,35 @@ class UserController extends Controller{
     private $email;
     private $usuario;
     private $contrasena;
+    private $usuarioService;
 
     private $usuarioModel;
 
-    public function singUp(){
-        if(!SessionManager::validateSession()) {
-            $this->asignarVariable();
-            if (ValidationManager::noEmptyString($this->nombre) && ValidationManager::noEmptyString($this->apellido) && ValidationManager::noEmptyString($this->email)
-                && ValidationManager::noEmptyString($this->usuario) && ValidationManager::noEmptyString($this->contrasena)
-            ) {
-                $this->setUsuarioModel();
-                $result = $this->usuarioModel->singUp($this->nombre, $this->apellido, $this->email, $this->usuario, $this->contrasena);
-                if ($result == null) {
-                    $this->redireccionarSingUp(array("mensaje" => "El usuario ya existe"));
-                } else {
-                    $this->redireccionarLogin(array("mensaje" => "Usuario creado!"));
-                }
-            } else {
-                $this->redireccionarSingUp(array("mensaje" => "Tenes que completar todos los campos"));
-            }
-        }else{
-            $this->redireccionarHome();
-        }
+    function __construct(){
+        $this->usuarioService = ServiceFactory::getUsuarioService();
     }
 
-    public function encontrarUsuarioByEmail($email){
-        if(SessionManager::validateSession()){
-            $this->setUsuarioModel();
-            return $this->usuarioModel->findByExactEmail($email);
-        }else{
-            $this->redireccionarLogin();
-        }
+    public function singUp(){
+        SessionManager::validateNoSession();
+        $this->asignarVariable();
+        $this->usuarioService->singUp($this->nombre, $this->apellido, $this->email, $this->usuario, $this->contrasena);
+        ViewManager::redireccionarSingUp();
     }
 
     public function autocomplete(){
+        SessionManager::validateSession();
         $this->asignarVariable();
-        $this->setUsuarioModel();
-        $result = $this->usuarioModel->findByEmail($this->email);
+        $result = $this->usuarioService->findByEmail($this->email);
         $normalizeResult = DtoManager::crearArrayDtoDeUsuarios($result);
         foreach ($normalizeResult as $user){
           echo $user->email." ";
         }
+    }
+
+    public function misConsultas(){
+        SessionManager::validateSession();
+        $consultas = $this->usuarioService->getMisConsultas(SessionManager::getName());
+        ViewManager::setObjeto($consultas);
     }
 
     private function asignarVariable(){
@@ -70,13 +58,6 @@ class UserController extends Controller{
             $this->contrasena = $_POST["contrasena"];
         }
     }
-
-    private function setUsuarioModel(){
-        if(!isset($this->usuarioModel)){
-            $this->usuarioModel = ModelManager::getModel("usuario");
-        }
-    }
-
 
 }
 ?>

@@ -17,15 +17,20 @@ Sing Up!
 
                         <form action="user/singup" method="post">
                             <div class="forgot">
-                                <h6><a href="login">Volver</a></h6>
+                                <h6><a href="">Volver</a></h6>
                             </div>
                             <div class="clear"> </div>
                             <h3>{{mensaje}}</h3>
-                            <input type="text"  placeholder="Nombre" name="nombre" onfocus="this.value = '';"/>
-                            <input type="text"  placeholder="Apellido" name="apellido" onfocus="this.value = '';"/>
-                            <input type="text"  placeholder="Email" name="email" onfocus="this.value = '';"/>
-                            <input type="text"  placeholder="User name" name="usuario" onfocus="this.value = '';"/>
-                            <input type="password"  placeholder="Password" name="contrasena" onfocus="this.value = '';" />
+                            <label class="mensajeError"><h4>{{nombre}}</h4></label>
+                            <input type="text"  placeholder="Nombre" name="nombre" value="{{nombreValue}}" />
+                            <label class="mensajeError"><h4>{{apellido}}</h4></label>
+                            <input type="text"  placeholder="Apellido" name="apellido" value="{{apellidoValue}}"/>
+                            <label class="mensajeError"><h4>{{email}}</h4></label>
+                            <input type="text"  placeholder="Email" name="email" value="{{emailValue}}"/>
+                            <label class="mensajeError"><h4>{{nombre}}</h4></label>
+                            <input type="text"  placeholder="User name" name="usuario" value="{{usuarioValue}}"/>
+                            <label class="mensajeError"><h4>{{contrasena}}</h4></label>
+                            <input type="password"  placeholder="Password" name="contrasena" value="{{contrasenaValue}}" />
 
                             <input type="submit" value="Sing Up!">
                         </form>

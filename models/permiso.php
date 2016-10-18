@@ -2,165 +2,166 @@
 
 require_once 'models/model.php';
 
-class Permiso extends Model{
+class Model_Permiso extends Model{
 
-    public function createCreator($usuarioId, $consultaId){
-        $this->create($usuarioId,$consultaId, "1");
-    }
+    private $consulta;
+    private $permiso;
+    private $usuario;
+    private $id;
 
-    public function createAdmin($usuarioId, $consultaId){
-        $this->create($usuarioId,$consultaId, "2");
-    }
-
-    public function createEjecutor($usuarioId, $consultaId){
-        $this->create($usuarioId,$consultaId, "3");
-    }
-
-    public function createVisitor($usuarioId, $consultaId){
-        $this->create($usuarioId,$consultaId, "4");
-    }
-
-    private function create($usuarioId, $consultaId, $permiso){
-        DatabaseManager::createConnection();
-        try {
-            $consultaBean = $this->getConsultaModel()->findById($consultaId);
-            $usuarioBean = $this->getUsuarioModel()->findById($usuarioId);
-            if ($consultaBean->id == 0 || $usuarioBean->id == 0 || ($permiso != 1 && $permiso != 2 && $permiso != 3 && $permiso != 4)) {
-                return null;
-            }
-            $permisoBean = R::dispense('permiso');
-            $permisoBean["consulta"] = $consultaBean;
-            $permisoBean["usuario"] = $usuarioBean;
-            $permisoBean["permiso"] = $permiso;
-
-            R::store($permisoBean);
-            DatabaseManager::commitTransaction();
+    public function agregarPermiso($permisoService){
+        if($this->bean['permiso']<3){
+            //es admin o creador
+            $permisoService->puedeAgregar();
+        }else{
+            $permisoService->sinPermisos();
         }
-        catch (Exception $e){
-            DatabaseManager::rollbackTransaction();
+    }
+
+    public function quitarPermiso($permisoService){
+        if($this->bean['permiso']<3){
+            //es admin o creador
+            $permisoService->puedeQuitar();
+        }else{
+            $permisoService->sinPermisos();
         }
-        DatabaseManager::closeConnection();
+    }
+
+    public function crear($permisoService){
+        $permisoService->modificar();
+    }
+
+    public function puedeMostrar($consultaService){
+        $this->verificarAccion($consultaService, "ver", "ver");
+    }
+
+    public function puedeModificar($consultaService){
+        $this->verificarAccion($consultaService, "administrar", "editar");
+    }
+
+    public function puedeEliminar($consultaService){
+        $this->verificarAccion($consultaService, "administrar", "eliminar");
+    }
+
+    private function verificarAccion($consultaService, $permiso, $accion){
+        $result = $this->tienePermiso($this->bean->permiso, $permiso);
+        if($result == 1){
+            //tiene permiso
+            ViewManager::addMensaje('permiso', $this->bean["permiso"]);
+            switch ($accion) {
+                case 'ver':
+                    $consultaService->mostar();
+                    break;
+                case 'editar':
+                    $consultaService->modificar();
+                    break;
+                case 'eliminar':
+                    $consultaService->eliminar();
+                    break;
+            }            
+        }else{
+            //no tiene permiso
+            $consultaService->sinPermisos();
+        }
     }
 
     public function findById($id){
-        return $this->findByTypeId("permiso", $id);
-    }
-
-    public function tienePermiso($usuarioId, $consultaId, $permiso){
         DatabaseManager::createConnection();
-        $permisoBean = null;
+        $return = NullObjectFactory::getNullObject("Permiso");
         try {
-            switch ($permiso) {
-                case "ver":
-                    $permisoBean = R::findOne("permiso", "usuario_id = ? and consulta_id = ?", [$usuarioId, $consultaId]);
-                    break;
-                case "editar":
-                    $permisoBean = R::findOne("permiso", "usuario_id = ? and consulta_id = ? and permiso<3", [$usuarioId, $consultaId]);
-                    break;
-                case "ejecutar":
-                    $permisoBean = R::findOne("permiso", "usuario_id = ? and consulta_id = ? and permiso<4", [$usuarioId, $consultaId]);
-                    break;
-                case "administrar":
-                    $permisoBean = R::findOne("permiso", "usuario_id = ? and consulta_id = ? and permiso<3", [$usuarioId, $consultaId]);
-                    break;
-                case "editarAdmin":
-                    $permisoBean = R::findOne("permiso", "usuario_id = ? and consulta_id = ? and permiso=1", [$usuarioId, $consultaId]);
-                    break;
-            }
+            $return = $this->getPermisoBean()->findById($id);
             DatabaseManager::commitTransaction();
         }
         catch (Exception $e){
             DatabaseManager::rollbackTransaction();
         }
         DatabaseManager::closeConnection();
-        if($permisoBean != null){
-            return $permisoBean->permiso;
+        if($return == null){
+            $return = NullObjectFactory::getNullObject("Permiso");
         }
-        return 0;
+        return $return;
     }
 
-    public function modificar($usuarioId, $consultaId, $permiso)
-    {
-        DatabaseManager::createConnection();
-        try {
-            $permisoBean = $this->getPermiso($usuarioId, $consultaId);
-            switch ($permiso) {
-                case "ver":
-                    $permiso = 4;
-                    break;
-                case "ejecutar":
-                    $permiso = 3;
-                    break;
-                case "administrar":
-                    $permiso = 2;
-                    break;
-            }
-            $permisoBean->permiso = $permiso;
-            R::store($permisoBean);
-            DatabaseManager::commitTransaction();
+
+    private function tienePermiso($permisoQueTiene, $permisoQueQuiere){
+        switch ($permisoQueQuiere) {
+            case 'ver':
+                return true;
+                break;
+            case 'administrar':
+                if($permisoQueTiene < 3){
+                    return true;
+                }
+                break;            
+            default:
+                return false;
+                break;
         }
-        catch (Exception $e){
-            DatabaseManager::rollbackTransaction();
-        }
-        DatabaseManager::closeConnection();
+    }    
+
+    public function setUsuario($usuario){
+        $this->usuario = $usuario;
     }
 
-    public function eliminar($idConsulta, $idUsuario){
-        DatabaseManager::createConnection();
-        try {
-            $permisoBean = $this->getPermiso($idUsuario, $idConsulta);
-            R::trash($permisoBean);
-            DatabaseManager::commitTransaction();
-        }
-        catch (Exception $e){
-            DatabaseManager::rollbackTransaction();
-        }
-        DatabaseManager::closeConnection();
+    public function getUsuario(){
+        return $this->usuario;
     }
 
-    public function getPermiso($usuarioId, $consultaId){
-        DatabaseManager::createConnection();
-        $permisoBean = null;
-        try {
-            $permisoBean = R::findOne("permiso", "usuario_id = ? and consulta_id = ?", [$usuarioId, $consultaId]);
-            DatabaseManager::commitTransaction();
+    public function setPermiso($permiso){
+        switch ($permiso) {
+            case "ver":
+                $permiso = 4;
+                break;
+            case "ejecutar":
+                $permiso = 3;
+                break;
+            case "administrar":
+                $permiso = 2;
+                break;
+            default:
+                ViewManager::addMensaje('mensaje', 'no puedes asignar ese permiso');
+                throw new Exception;
+                break;
         }
-        catch (Exception $e){
-            DatabaseManager::rollbackTransaction();
-        }
-        DatabaseManager::closeConnection();
-
-        return $permisoBean;
+        $this->permiso = $permiso;
     }
 
-    public function getPermisosHastaDe($usuarioId, $permiso){
-        DatabaseManager::createConnection();
-        $result= array();
-        try {
-            switch ($permiso) {
-                case "ver":
-                    $permiso = 4;
-                    break;
-                case "ejecutar":
-                    $permiso = 3;
-                    break;
-                case "administrar":
-                    $permiso = 2;
-                    break;
-                case "creador":
-                    $permiso = 1;
-                    break;
-            }
-            $result = R::find("permiso", "usuario_id= ? and permiso >= ?", [$usuarioId, $permiso]);
-            DatabaseManager::commitTransaction();
-        }
-        catch (Exception $e){
-            DatabaseManager::rollbackTransaction();
-        }
-        DatabaseManager::closeConnection();
-        return array_values($result);
+    public function getPermiso(){
+        return $this->permiso;
     }
 
+    public function getShowPermiso(){
+        switch ($this->bean['permiso']) {
+            case 4:
+                return "ver";
+                break;
+            case 3:
+                return "ejecutar";
+                break;
+            case 2:
+                return "administrar";
+                break;
+            case 1:
+                return "creador";
+                break;
+        }
+    }
+
+    public function setConsulta($consulta){
+        $this->consulta = $consulta;
+    }
+
+    public function getConsulta(){
+        return $this->consulta;
+    }
+
+    public function setId($id){
+        $this->id = $id;
+    }
+
+    public function getId(){
+        return $this->id;
+    }   
 }
 
 ?>

@@ -19,7 +19,7 @@ Home
                 </section>
                 <section class="boton">
                     <form  method="post" action="consulta/eliminar">
-                        <input type="hidden" name="id" value="{{consulta.id}}">
+                        <input type="hidden" name="id" value="{{consulta.id}}"/>
                         <input type="submit" class="b" value="Eliminar"/>
                     </form>
                 </section>
@@ -31,17 +31,17 @@ Home
     <div>
         <form method="post" action="consulta/editar">
             <div class="form-group">
-                <label for="Nombre">Nombre</label>
+                <label for="Nombre">Nombre</label><h4>{{nombre}}</h4>
                 {%if permiso<3 %}
-                <input type="text" class="form-control" id="nombre" name="nombre"  placeholder="Nombre de la consulta" value={{consulta.nombre}} />
+                <input type="text" class="form-control" id="nombre" name="nombre"  placeholder="Nombre de la consulta" value="{{consulta.nombre}}" />
                 {%else%}
                     <span class="form-control">{{consulta.nombre}}</span>
                 {%endif%}
             </div>
             <div class="form-group">
-                <label for="sql">SQL</label>
+                <label for="sql">SQL</label><h4>{{sql}}</h4>
                 {%if permiso<3 %}
-                <input type="text" class="form-control" id="sql" name="sql"  placeholder="SQL" value={{consulta.codigo_sql}} />
+                <input type="text" class="form-control" id="sql" name="sql"  placeholder="SQL" value="{{consulta.codigo_sql}}" />
                 {%else%}
                 <span class="form-control">{{consulta.codigo_sql}}</span>
                 {%endif%}
@@ -62,7 +62,7 @@ Home
                 Compartir con otros usuarios
             </div>
         </div>
-        <form action="permiso/agregar" method="post">
+        <form action="permiso/agregar" class="formAgregar" method="post">
             <div class="content">
                 <div class="personas">Personas</div>
                 <div class="inputOptions">
@@ -81,11 +81,29 @@ Home
                     </select>
                 </div>
             </div>
+            <div class="content listPermisos">
+                <ul>
+                    {% for permiso in permisos%}
+                        <li class="usuarioPermiso">
+                            {{permiso.nombreUsuario}} puede {{permiso.permiso}}
+                            <a onClick="ejecutarFormQuitarPermiso({{permiso.id}})" class="quitarPermiso">
+                                Quitar permiso
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
             <div class="bot">
                 <input type="submit" value="Listo" class="buton">
             </div>
             <input type="hidden" name="id" value={{consulta.id}}>
         </form>
+            {% for permiso in permisos%}
+                <form action="permiso/quitar" id="quitarPermiso{{permiso.id}}" method="POST">
+                    <input type="hidden" name="idPermiso" value={{permiso.id}}/>
+                    <input type="hidden" name="id" value={{consulta.id}}>
+                </form>
+            {% endfor %}
     </div>
 
 </div>

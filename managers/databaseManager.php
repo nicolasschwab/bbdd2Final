@@ -9,8 +9,10 @@ class DatabaseManager{
         if( ! R::testConnection()){
             R::setup( 'mysql:host=localhost;dbname=bbdd2',
                 'root', '' );
+            R::freeze(true);
         }
         self::startTransaction();
+
     }
 
     public static function closeConnection(){

@@ -14,7 +14,7 @@ Home
         <div class="table-content">
             {% for consulta in consultas %}
                 <form method="post" action="consulta/mostrar" id="form{{consulta.id}}">
-                    <div class="row" ondblclick="ejecutarForm({{consulta.id}})">
+                    <div class="row consultaTabla" ondblclick="ejecutarForm({{consulta.id}})">
                         <div class="col-md-4">{{consulta.nombre}}</div>
                         <div class="col-md-4">{{consulta.codigo_sql}}</div>
                         <div class="col-md-4">{{consulta.creador.nombre}}</div>
