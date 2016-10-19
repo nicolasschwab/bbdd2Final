@@ -8,10 +8,10 @@ class Router{
     private $routes = array();
 
     public function addRoute($name,$nameFileController, $nameClassController, $function){
-        $route= new Route($name, $nameFileController, $nameClassController,$function);
         if(isset($this->routes[$name])){
             die("Esa ruta ya esta asignada");
         }else{
+            $route= new Route($name, $nameFileController, $nameClassController,$function);
             $this->routes[$name] = $route;
         }
     }

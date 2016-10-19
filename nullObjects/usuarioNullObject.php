@@ -5,7 +5,7 @@ require_once 'managers/viewManager.php';
 class UsuarioNullObject{
 	
 
-	public function create($nombre, $apellido, $email, $nombreUsuario, $contrasena){
+	public function create(){
 		return;
 	}
 

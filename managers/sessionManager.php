@@ -70,7 +70,7 @@ class SessionManager{
         }
         if(isset($_SESSION["nombre"]) && isset($_SESSION["valor"])){
             if(!empty($_COOKIE[$_SESSION["nombre"]]) && ( $_COOKIE[$_SESSION["nombre"]] == $_SESSION["valor"]) ){
-                        return true;
+                return true;
             }
         }        
         return false;

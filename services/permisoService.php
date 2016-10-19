@@ -22,7 +22,7 @@ class PermisoService extends Service{
 	}
 
 	public function quiereAgregar($userMail, $consultaId, $permiso){
-		if( true){//ValidationManager::agregarPermiso($userMail, $consultaId, $permiso) ){
+		if( ValidationManager::agregarPermiso($userMail, $consultaId, $permiso) ){
 			$usuarioBean = ServiceFactory::getUsuarioService()->findByExactEmail($userMail);
 			$consultaBean = ServiceFactory::getConsultaService()->findById($consultaId);
 			$this->permiso->setUsuario($usuarioBean);			

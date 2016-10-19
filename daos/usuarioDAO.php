@@ -36,16 +36,13 @@ class UsuarioDAO extends DAO{
     public function create($nombre, $apellido, $email, $nombreUsuario, $contrasena){
         DatabaseManager::createConnection();
         try {
-            $result = $this->getUsuarioBean()->findByUserName($nombreUsuario);
-            $result2 = $this->getUsuarioBean()->findByExactEmail($email);
-            if(!ValidationManager::noEmptyArray($result) && !ValidationManager::noEmptyArray($result2)){
-                $this->getUsuarioBean()->create($nombre, $apellido, $email, $nombreUsuario, $contrasena);
-                ViewManager::addMensaje('mensaje', 'Usuario creado!');
-                ViewManager::setEstado(true);
-            }else{
-                ViewManager::addMensaje('mensaje', 'El nombre de usuario y/o mail ya esta en uso');
-                ViewManager::setEstado(false);
-            }
+            $usuarioPorNombre = $this->getUsuarioBean()->findByUserName($nombreUsuario);
+            $usuarioPorMail = $this->getUsuarioBean()->findByExactEmail($email);
+            $usuarioPorNombre->create();
+            $usuarioPorMail->create();
+            $this->getUsuarioBean()->create($nombre, $apellido, $email, $nombreUsuario, $contrasena);
+            ViewManager::addMensaje('mensaje', 'Usuario creado!');
+            ViewManager::setEstado(true);
             DatabaseManager::commitTransaction();
         }
         catch (Exception $e){

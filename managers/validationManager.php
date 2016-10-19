@@ -22,14 +22,6 @@ class ValidationManager{
         return !empty($array);
     }
 
-    private function positiveInt($int){
-		if( is_int($int) && $int > 0 ){
-			return true;
-		}else{
-			return false;
-		}
-    }
-
     public static function modificarConsulta($nombre, $sql){
         $result = true;
         if( !self::noEmptyString($nombre) && !noNullString($nombre) ){
@@ -72,6 +64,14 @@ class ValidationManager{
         return $result;   
     }
 
+    public static function agregarPermiso($userMail, $consultaId, $permiso){
+        $result = true;
+        $result &= self::validatePositiveInt($consultaId, '');
+        $result &= self::validateStringNoSpecialChars($permiso, 'permiso');
+        $result &= self::validateEmail($userMail, 'email');
+        return $result;
+    }
+
     private static function validateStringAllowSpecialChars($string, $nameString = ''){
         self::addVariableValue($nameString, $string);
         if( !self::noEmptyString($string) ){
@@ -81,6 +81,15 @@ class ValidationManager{
             return false;
         }
         return true;
+    }
+
+    private static function validatePositiveInt($int, $nameString){
+        if( is_numeric($int) && $int > 0 ){
+            return true;
+        }else{
+            self::addMensajeVacio($nameString);
+            return false;
+        }
     }
 
     private static function validateStringNoSpecialChars($string, $nameString = ''){

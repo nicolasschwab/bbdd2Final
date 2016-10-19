@@ -18,6 +18,12 @@ class Model_Usuario extends Model{
         return $this->getUsuarioBean()->findById($id);
     }
 
+    public function create(){
+        ViewManager::addMensaje('mensaje', 'El nombre de usuario y/o mail ya esta en uso');
+        ViewManager::setEstado(false);
+        throw new Exception();
+    }
+
 }
 
 

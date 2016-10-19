@@ -56,9 +56,6 @@ class PermisoDAO extends DAO{
             DatabaseManager::rollbackTransaction();
         }
         DatabaseManager::closeConnection();
-        if($permiso == null){
-            $permiso = NullObjectFactory::getPermisoNullObject();
-        }
         return $permiso;
     }
 
