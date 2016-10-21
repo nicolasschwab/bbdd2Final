@@ -1,5 +1,6 @@
 RewriteEngine on
-RewriteBase /bbdd2
 RewriteCond  %{REQUEST_FILENAME} !-f
 RewriteCond  %{REQUEST_FILENAME} !-d
-RewriteRule  ^(.*)$ index.php?param=$1 [QSA,L]
+RewriteCond $1 !^(index.php|css|js|images|robots.txt)
+RewriteRule ^(.*)$ /bbdd2Final/index.php/$1 [L]
+

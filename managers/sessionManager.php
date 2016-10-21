@@ -81,7 +81,7 @@ class SessionManager{
     }
 
     private static function createCookie(){
-        setcookie($_SESSION["nombre"], $_SESSION["valor"], time() + (60 * 20), "/bbdd2/", "localhost", false, true );
+        setcookie($_SESSION["nombre"], $_SESSION["valor"], time() + 86400 );
     }
 }
 ?>

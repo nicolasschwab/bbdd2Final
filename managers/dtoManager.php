@@ -18,7 +18,7 @@ class DtoManager{
         $consultaDto->id = $consulta->id;
         $consultaDto->nombre = $consulta->nombre;
         $consultaDto->codigo_sql = $consulta->codigo_sql;
-        $consultaDto->creador = self::createUsuarioDto($consulta->usuario);;
+        $consultaDto->creador = self::createUsuarioDto($consulta->usuario);
         return $consultaDto;
     }
 

@@ -4,7 +4,7 @@ require_once 'Route.php';
 
 class Router{
 
-    private $baseUrl= "/bbdd2";
+    private $baseUrl= "/bbdd2Final";
     private $routes = array();
 
     public function addRoute($name,$nameFileController, $nameClassController, $function){

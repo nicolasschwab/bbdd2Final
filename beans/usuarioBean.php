@@ -5,6 +5,7 @@ require_once "beans/bean.php";
 class UsuarioBean extends Bean{
 
     public function create($nombre, $apellido, $email, $nombreUsuario, $contrasena){
+
         $usuario = R::dispense('usuario');
         $usuario['nombre'] = $nombre;
         $usuario['apellido'] = $apellido;

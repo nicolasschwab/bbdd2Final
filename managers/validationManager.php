@@ -24,15 +24,8 @@ class ValidationManager{
 
     public static function modificarConsulta($nombre, $sql){
         $result = true;
-        if( !self::noEmptyString($nombre) && !noNullString($nombre) ){
-            $result &= false;
-            ViewManager::addMensaje('nombre', 'El nombre de la consulta no puede estar vacio');
-        }
-        if( !self::noEmptyString($sql) && !self::noNullString($sql) ){
-            $result &= false;
-            ViewManager::addMensaje('sql', 'El codigo de la consulta no puede estar vacio');
-            }
-        ViewManager::setEstado(true);
+	$result &= self::validateStringNoSpecialChars($nombre, 'nombre');
+	$result &= self::validateStringAllowSpecialChars($sql, 'sql');
         return $result;
     }
 
