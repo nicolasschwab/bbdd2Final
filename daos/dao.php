@@ -6,6 +6,9 @@ require_once 'managers/databaseManager.php';
 require_once 'factories/nullObjectFactory.php';
 class DAO{
 	
+    private static $consultaBean;
+    private static $usuarioBean;
+    private static $permisoBean;
 
 	protected function getConsultaBean(){
         if(!isset($this->consultaBean)){

@@ -34,7 +34,7 @@ class ConsultaBean extends Bean{
         }
     }
 
-    public function findById($id){
+    public function findById($id, $var = null){
         return parent::findById("consulta", $id);
     }
 

@@ -25,7 +25,7 @@ class UsuarioBean extends Bean{
         return $this->processOneReturn($result);
     }
 
-    public function findById($id){
+    public function findById($id, $var = null){
         parent::findById("usuario",$id);
     }
 

@@ -12,7 +12,7 @@ class PermisoBean extends Bean{
         $this->persist($permiso);
     }
 
-    public function findById($id){
+    public function findById($id, $var = null){
         $permiso = parent::findById("permiso",$id);
         return $this->processOneReturn($permiso);
     }

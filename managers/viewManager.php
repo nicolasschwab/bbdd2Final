@@ -10,22 +10,22 @@ class ViewManager{
     private static $mensaje;
     private static $objeto;
 
-    public function setEstado($nuevoEstado){
+    public static function setEstado($nuevoEstado){
         self::$estado = $nuevoEstado;
     }
 
-    public function setMensaje($nuevoMensaje){
+    public static function setMensaje($nuevoMensaje){
         self::$mensaje = $nuevoMensaje;
     }
 
-    public function addMensaje($clave, $valor){
+    public static function addMensaje($clave, $valor){
         if(self::$mensaje == null){
             self::$mensaje = array();
         }
         self::$mensaje[$clave] = $valor;        
     }
 
-    public function setObjeto($nuevoObjecto){
+    public static function setObjeto($nuevoObjecto){
         self::$objeto = $nuevoObjecto;
     }
 
@@ -87,7 +87,9 @@ class ViewManager{
         SessionManager::validateSession();
         if(self::$estado == true){
             self::$mensaje['consulta'] = DtoManager::createConsultaDto(self::$objeto);
-            self::$mensaje['permisos'] = DtoManager::createArrayPermisoDto(self::$mensaje['permisos']);
+            if(isset(self::$mensaje['permisos'])){
+                self::$mensaje['permisos'] = DtoManager::createArrayPermisoDto(self::$mensaje['permisos']);
+            }            
             self::cargarDetalleConsulta(self::$mensaje);
         }else{
             self::home();

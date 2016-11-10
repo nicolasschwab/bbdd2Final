@@ -8,7 +8,7 @@ class DatabaseManager{
     public static function createConnection(){
         if( ! R::testConnection()){
             R::setup( 'mysql:host=localhost;dbname=bbdd2',
-                'root', 'root' );
+                'root');
             R::freeze(false);
         }
         self::startTransaction();
